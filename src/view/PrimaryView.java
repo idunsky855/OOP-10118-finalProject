@@ -2,6 +2,7 @@ package view;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
@@ -20,11 +21,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import listeners.*;
-import model.Question;
+import model.A_Question;
 
-public class PrimaryView implements AbstractView {
+public class PrimaryView implements A_View {
 
-	ArrayList<UIListener> listeners = new ArrayList<>();
+	ArrayList<I_UIListener> listeners = new ArrayList<>();
 	Stage window;
 	Scene scene;
 	GridPane gp;
@@ -112,7 +113,7 @@ public class PrimaryView implements AbstractView {
 				alert.setContentText("We were not able to save youer questions");
 				alert.showAndWait().ifPresent(rs -> {
 					if (rs == ButtonType.OK) {
-						System.out.println("Pressed OK.");
+						//System.out.println("Pressed OK.");
 					}
 				});
 			}
@@ -121,56 +122,56 @@ public class PrimaryView implements AbstractView {
 
 	}
 
-	private void saveAndExit() throws FileNotFoundException, IOException {
-		for (UIListener l : listeners) {
+	private void saveAndExit() throws FileNotFoundException, IOException, SQLException {
+		for (I_UIListener l : listeners) {
 			l.saveAndExit();
 		}
 	}
 
 	private void openCloneTestView() {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.openCloneTestView(new Stage());
 		}
 	}
 
 	private void openCreateTestRandomly() {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.openCreateTestRandomlyView(new Stage());
 		}
 	}
 
 	private void openCreateTestManuallyView() {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.openCreateTestManuallyView(new Stage());
 		}
 	}
 
 	private void openDeleteAnswerView() {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.openDeleteAnswerView(new Stage());
 		}
 	}
 
 	public void openChangeAnswerView() {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.openChanegeAnswerView(new Stage());
 		}
 	}
 
 	public void openAddAnswerView() {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.openAddAnswerView(new Stage());
 		}
 	}
 
 	public void openAddQuestionView() {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.OpenAddQuestionView(new Stage());
 		}
 	}
 
 	public void openAllQuestionView() {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.OpenAllQuestionView(new Stage());
 		}
 	}
@@ -222,13 +223,13 @@ public class PrimaryView implements AbstractView {
 	}
 
 	@Override
-	public void registerListener(UIListener listener) {
+	public void registerListener(I_UIListener listener) {
 		listeners.add(listener);
 	}
 
 	@Override
 	public void openChangeQuestionView() {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.OpenChangeQuestionView(new Stage());
 		}
 	}

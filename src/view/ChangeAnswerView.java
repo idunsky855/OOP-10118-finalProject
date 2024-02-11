@@ -19,11 +19,11 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
-import listeners.UIListener;
+import listeners.I_UIListener;
 
-public class ChangeAnswerView implements AbstractChangeAnswerView {
+public class ChangeAnswerView implements A_ChangeAnswerView {
 
-	ArrayList<UIListener> listeners = new ArrayList<>();
+	ArrayList<I_UIListener> listeners = new ArrayList<>();
 	Stage window;
 	Scene scene;
 	GridPane gp;
@@ -47,7 +47,7 @@ public class ChangeAnswerView implements AbstractChangeAnswerView {
 	}
 
 	@Override
-	public void registerListener(UIListener listener) {
+	public void registerListener(I_UIListener listener) {
 		listeners.add(listener);
 	}
 
@@ -87,7 +87,7 @@ public class ChangeAnswerView implements AbstractChangeAnswerView {
 							"Please enter an index of an answer from the question you chose (Larger than 2)!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//////System.out.println("Pressed OK.");
 						}
 					});
 					answerIndexText.clear();
@@ -102,7 +102,7 @@ public class ChangeAnswerView implements AbstractChangeAnswerView {
 					alert.setContentText("Please enter an index of an answer from the question you chose!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//////System.out.println("Pressed OK.");
 						}
 					});
 					answerIndexText.clear();
@@ -118,7 +118,7 @@ public class ChangeAnswerView implements AbstractChangeAnswerView {
 				alert.setContentText("Please enter an index of an answer from the question you chose!");
 				alert.showAndWait().ifPresent(rs -> {
 					if (rs == ButtonType.OK) {
-						System.out.println("Pressed OK.");
+						//////System.out.println("Pressed OK.");
 					}
 				});
 
@@ -156,7 +156,7 @@ public class ChangeAnswerView implements AbstractChangeAnswerView {
 					alert.setContentText("Please enter an index of a question from the list!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//////System.out.println("Pressed OK.");
 						}
 					});
 					questIndexText.clear();
@@ -174,7 +174,7 @@ public class ChangeAnswerView implements AbstractChangeAnswerView {
 				alert.setContentText("Please enter an index of a question from the list!");
 				alert.showAndWait().ifPresent(rs -> {
 					if (rs == ButtonType.OK) {
-						System.out.println("Pressed OK.");
+						//////System.out.println("Pressed OK.");
 					}
 				});
 
@@ -214,7 +214,7 @@ public class ChangeAnswerView implements AbstractChangeAnswerView {
 							alert.setContentText("Please select if the answer is correct!");
 							alert.showAndWait().ifPresent(rs -> {
 								if (rs == ButtonType.OK) {
-									System.out.println("Pressed OK.");
+									//////System.out.println("Pressed OK.");
 								}
 							});
 
@@ -227,7 +227,7 @@ public class ChangeAnswerView implements AbstractChangeAnswerView {
 					alert.setContentText("Please enter the answer!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//////System.out.println("Pressed OK.");
 						}
 					});
 				}
@@ -238,7 +238,7 @@ public class ChangeAnswerView implements AbstractChangeAnswerView {
 					alert.setContentText("Your answer was change successfully!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//////System.out.println("Pressed OK.");
 						}
 					});
 					questIndexText.clear();
@@ -252,7 +252,7 @@ public class ChangeAnswerView implements AbstractChangeAnswerView {
 							+ ((isOpenQuestion(questIndex)) ? "" : "and there are less than 10 answers!"));
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//////System.out.println("Pressed OK.");
 						}
 					});
 				}
@@ -264,7 +264,7 @@ public class ChangeAnswerView implements AbstractChangeAnswerView {
 				alert.setContentText("We are sorry, we could not change your answer!");
 				alert.showAndWait().ifPresent(rs -> {
 					if (rs == ButtonType.OK) {
-						System.out.println("Pressed OK.");
+						//////System.out.println("Pressed OK.");
 					}
 				});
 			}
@@ -283,7 +283,7 @@ public class ChangeAnswerView implements AbstractChangeAnswerView {
 
 	public int getNumOfAnswersForQuestion(int questIndex) {
 		int numOfAnswers = 0;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			numOfAnswers = l.getNumOfAnswersForQuestion(questIndex);
 		}
 		return numOfAnswers;
@@ -364,7 +364,7 @@ public class ChangeAnswerView implements AbstractChangeAnswerView {
 
 	@Override
 	public void OpenAllQuestionView() {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.OpenAllQuestionView(new Stage());
 		}
 	}
@@ -372,7 +372,7 @@ public class ChangeAnswerView implements AbstractChangeAnswerView {
 	@Override
 	public boolean isOpenQuestion(int i) {
 		boolean res = false;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			res = l.isOpenQuestion(i);
 		}
 		return res;
@@ -383,7 +383,7 @@ public class ChangeAnswerView implements AbstractChangeAnswerView {
 			throws Exception {
 		System.out.println("changeAnswer.changanswer");
 		boolean res = false;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 
 			res = l.changeAnswerToModel(questIndex, answerIndex, answer, isTrue);
 		}
@@ -393,7 +393,7 @@ public class ChangeAnswerView implements AbstractChangeAnswerView {
 	@Override
 	public int getNumOfQuestions() {
 		int numOfQuestions = 0;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			numOfQuestions = l.getNumOfQuestions();
 		}
 		return numOfQuestions;

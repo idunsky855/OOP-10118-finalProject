@@ -1,6 +1,7 @@
 package view;
 
 import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javafx.geometry.HPos;
@@ -18,10 +19,10 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
-import listeners.UIListener;
+import listeners.I_UIListener;
 
-public class CloneTestView implements AbstractCloneTestView {
-	ArrayList<UIListener> listeners = new ArrayList<>();
+public class CloneTestView implements A_CloneTestView {
+	ArrayList<I_UIListener> listeners = new ArrayList<>();
 	Stage window;
 	Scene scene;
 	GridPane gp;
@@ -44,7 +45,7 @@ public class CloneTestView implements AbstractCloneTestView {
 	}
 
 	@Override
-	public void registerListener(UIListener listener) {
+	public void registerListener(I_UIListener listener) {
 		listeners.add(listener);
 	}
 
@@ -101,7 +102,7 @@ public class CloneTestView implements AbstractCloneTestView {
 
 	public void buttons() {
 
-		testIndexLabel = new Label("Test index):");
+		testIndexLabel = new Label("Test index:");
 
 		testIndexText = new TextField();
 
@@ -111,9 +112,9 @@ public class CloneTestView implements AbstractCloneTestView {
 		chooseTestButton.setOnAction(e -> {
 			try {
 				testIndex = Integer.parseInt(testIndexText.getText());
-				System.out.println(testIndex);
 				if (testIndex > 0 && testIndex <= getNumOfTests()) {
 					cloneTest(--testIndex);
+					System.out.println("cloned");
 					finish();
 				} else if (getNumOfTests() == 0) {
 					Alert alert = new Alert(AlertType.ERROR);
@@ -122,7 +123,7 @@ public class CloneTestView implements AbstractCloneTestView {
 					alert.setContentText("Please create more tests before trying to clone one!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//System.out.println("Pressed OK.");
 						}
 					});
 
@@ -135,7 +136,7 @@ public class CloneTestView implements AbstractCloneTestView {
 					alert.setContentText("Please try again!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//System.out.println("Pressed OK.");
 						}
 					});
 					testIndexText.clear();
@@ -147,7 +148,7 @@ public class CloneTestView implements AbstractCloneTestView {
 				alert.setContentText("Please enter a size that is in range of tests index!");
 				alert.showAndWait().ifPresent(rs -> {
 					if (rs == ButtonType.OK) {
-						System.out.println("Pressed OK.");
+						//System.out.println("Pressed OK.");
 					}
 				});
 				testIndexText.clear();
@@ -166,29 +167,29 @@ public class CloneTestView implements AbstractCloneTestView {
 	}
 
 	public void cloneTest(int i) {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.cloneTest(i);
 		}
 	}
 
 	private int getNumOfTests() {
 		int num = 0;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			num = l.getNumOfTests();
 		}
 		return num;
 	}
 
 	@Override
-	public void finish() throws FileNotFoundException {
-		for (UIListener l : listeners) {
-			l.finishTest();
+	public void finish() {
+		for (I_UIListener l : listeners) {
+			l.finishClonedTest();
 		}
 	}
 
 	@Override
 	public void OpenAllTestsView() {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.OpenAllTestsView(new Stage());
 		}
 	}

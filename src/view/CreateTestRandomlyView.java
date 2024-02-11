@@ -1,6 +1,7 @@
 package view;
 
 import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -19,10 +20,10 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
-import listeners.UIListener;
+import listeners.I_UIListener;
 
-public class CreateTestRandomlyView implements AbstractCreateTestRandomlyView {
-	ArrayList<UIListener> listeners = new ArrayList<>();
+public class CreateTestRandomlyView implements A_CreateTestRandomlyView {
+	ArrayList<I_UIListener> listeners = new ArrayList<>();
 	Stage window;
 	Scene scene;
 	GridPane gp;
@@ -45,7 +46,7 @@ public class CreateTestRandomlyView implements AbstractCreateTestRandomlyView {
 	}
 
 	@Override
-	public void registerListener(UIListener listener) {
+	public void registerListener(I_UIListener listener) {
 		listeners.add(listener);
 	}
 
@@ -79,7 +80,6 @@ public class CreateTestRandomlyView implements AbstractCreateTestRandomlyView {
 					alert.setContentText("Please add more valid questions before creating a test!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
 						}
 					});
 
@@ -92,19 +92,18 @@ public class CreateTestRandomlyView implements AbstractCreateTestRandomlyView {
 					alert.setContentText("Please try again!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
 						}
 					});
 					testSizeText.clear();
 				}
 			} catch (Exception exception) {
+				System.out.println(exception.getMessage());/////////////////////////
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Error!");
 				alert.setHeaderText("Wrong input");
 				alert.setContentText("Please enter a size that is in range of valid question number!");
 				alert.showAndWait().ifPresent(rs -> {
 					if (rs == ButtonType.OK) {
-						System.out.println("Pressed OK.");
 					}
 				});
 				testSizeText.clear();
@@ -176,7 +175,7 @@ public class CreateTestRandomlyView implements AbstractCreateTestRandomlyView {
 	@Override
 	public boolean isQuestionValid(int questIndex) {
 		boolean res = false;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			res = l.isValidQuestion(questIndex);
 		}
 		return res;
@@ -184,14 +183,14 @@ public class CreateTestRandomlyView implements AbstractCreateTestRandomlyView {
 
 	@Override
 	public void createTest(int size) {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.createTest(size);
 		}
 	}
 
 	@Override
-	public void finish() throws FileNotFoundException {
-		for (UIListener l : listeners) {
+	public void finish() throws FileNotFoundException, SQLException {
+		for (I_UIListener l : listeners) {
 			l.finishTest();
 		}
 	}
@@ -199,7 +198,7 @@ public class CreateTestRandomlyView implements AbstractCreateTestRandomlyView {
 	@Override
 	public int getNumOfValidQuestions() {
 		int i = 0;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			i = l.getNumOfValidQuestions();
 		}
 		return i;
@@ -209,7 +208,7 @@ public class CreateTestRandomlyView implements AbstractCreateTestRandomlyView {
 	@Override
 	public int getNumOfQuestions() {
 		int numOfQuestions = 0;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			numOfQuestions = l.getNumOfQuestions();
 		}
 		return numOfQuestions;
@@ -218,7 +217,7 @@ public class CreateTestRandomlyView implements AbstractCreateTestRandomlyView {
 	@Override
 	public boolean addQuestionToTest(int questIndex) throws Exception {
 		boolean b = false;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			b = l.addQuestionToTestRandomly(questIndex);
 		}
 		return b;
@@ -231,7 +230,7 @@ public class CreateTestRandomlyView implements AbstractCreateTestRandomlyView {
 
 	@Override
 	public void OpenAllValidQuestionView() {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.OpenAllValidQuestionView(new Stage());
 		}
 	}

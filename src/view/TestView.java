@@ -9,10 +9,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import listeners.UIListener;
+import listeners.I_UIListener;
 
-public class TestView implements AbstractTestView {
-	ArrayList<UIListener> listeners = new ArrayList<>();
+public class TestView implements A_TestView {
+	ArrayList<I_UIListener> listeners = new ArrayList<>();
 	Stage window;
 	Scene scene;
 	GridPane gp;
@@ -31,7 +31,7 @@ public class TestView implements AbstractTestView {
 	}
 
 	@Override
-	public void registerListener(UIListener listener) {
+	public void registerListener(I_UIListener listener) {
 		this.listeners.add(listener);
 	}
 
@@ -59,7 +59,7 @@ public class TestView implements AbstractTestView {
 			alert.setContentText("There are no questions in database!");
 			alert.showAndWait().ifPresent(rs -> {
 				if (rs == ButtonType.OK) {
-					System.out.println("Pressed OK.");
+					//System.out.println("Pressed OK.");
 					window.close();
 				}
 			});

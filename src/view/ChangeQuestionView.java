@@ -1,5 +1,6 @@
 package view;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javafx.collections.ObservableList;
@@ -19,10 +20,10 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
-import listeners.UIListener;
+import listeners.I_UIListener;
 
-public class ChangeQuestionView implements AbstractChangeQuestionView {
-	ArrayList<UIListener> listeners = new ArrayList<>();
+public class ChangeQuestionView implements A_ChangeQuestionView {
+	ArrayList<I_UIListener> listeners = new ArrayList<>();
 	Stage window;
 	Scene scene;
 	GridPane gp;
@@ -45,7 +46,7 @@ public class ChangeQuestionView implements AbstractChangeQuestionView {
 	}
 
 	@Override
-	public void registerListener(UIListener listener) {
+	public void registerListener(I_UIListener listener) {
 		listeners.add(listener);
 	}
 
@@ -133,7 +134,7 @@ public class ChangeQuestionView implements AbstractChangeQuestionView {
 					alert.setContentText("Please enter an index of a question from the list!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//System.out.println("Pressed OK.");
 						}
 					});
 					questIndexText.clear();
@@ -147,7 +148,7 @@ public class ChangeQuestionView implements AbstractChangeQuestionView {
 				alert.setContentText("Please enter an index of a question from the list!");
 				alert.showAndWait().ifPresent(rs -> {
 					if (rs == ButtonType.OK) {
-						System.out.println("Pressed OK.");
+						//System.out.println("Pressed OK.");
 					}
 				});
 				questIndexText.clear();
@@ -175,7 +176,7 @@ public class ChangeQuestionView implements AbstractChangeQuestionView {
 					alert.setContentText("Please enter the new question!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//System.out.println("Pressed OK.");
 						}
 					});
 				}
@@ -186,7 +187,7 @@ public class ChangeQuestionView implements AbstractChangeQuestionView {
 					alert.setContentText("Your question was changed successfully!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//System.out.println("Pressed OK.");
 						}
 					});
 
@@ -197,7 +198,7 @@ public class ChangeQuestionView implements AbstractChangeQuestionView {
 					alert.setContentText("make sure your question does not exist already!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//System.out.println("Pressed OK.");
 						}
 					});
 				}
@@ -209,7 +210,7 @@ public class ChangeQuestionView implements AbstractChangeQuestionView {
 				alert.setContentText("We are sorry, we could not change your question!");
 				alert.showAndWait().ifPresent(rs -> {
 					if (rs == ButtonType.OK) {
-						System.out.println("Pressed OK.");
+						//System.out.println("Pressed OK.");
 					}
 				});
 			}
@@ -227,7 +228,7 @@ public class ChangeQuestionView implements AbstractChangeQuestionView {
 
 	@Override
 	public void OpenAllQuestionView() {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.OpenAllQuestionView(new Stage());
 		}
 	}
@@ -235,16 +236,16 @@ public class ChangeQuestionView implements AbstractChangeQuestionView {
 	@Override
 	public int getNumOfQuestions() {
 		int numOfQuestions = 0;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			numOfQuestions = l.getNumOfQuestions();
 		}
 		return numOfQuestions;
 	}
 
 	@Override
-	public boolean changeQuestion(int index, String str) {
+	public boolean changeQuestion(int index, String str) throws IndexOutOfBoundsException, SQLException {
 		boolean changed = false;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			changed = l.changeQuestion(index, str);
 		}
 		return changed;

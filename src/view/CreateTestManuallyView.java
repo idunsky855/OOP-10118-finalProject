@@ -1,6 +1,7 @@
 package view;
 
 import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javafx.collections.ObservableList;
@@ -20,10 +21,10 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
-import listeners.UIListener;
+import listeners.I_UIListener;
 
-public class CreateTestManuallyView implements AbstractCreateTestManuallyView {
-	ArrayList<UIListener> listeners = new ArrayList<>();
+public class CreateTestManuallyView implements A_CreateTestManuallyView {
+	ArrayList<I_UIListener> listeners = new ArrayList<>();
 	Stage window;
 	Scene scene;
 	GridPane gp;
@@ -46,7 +47,7 @@ public class CreateTestManuallyView implements AbstractCreateTestManuallyView {
 	}
 
 	@Override
-	public void registerListener(UIListener listener) {
+	public void registerListener(I_UIListener listener) {
 		listeners.add(listener);
 	}
 
@@ -80,7 +81,7 @@ public class CreateTestManuallyView implements AbstractCreateTestManuallyView {
 					alert.setContentText("Please add more valid questions before creating a test!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//System.out.println("Pressed OK.");
 						}
 					});
 
@@ -96,7 +97,7 @@ public class CreateTestManuallyView implements AbstractCreateTestManuallyView {
 					alert.setContentText("Please try again!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//System.out.println("Pressed OK.");
 						}
 					});
 					testSizeText.clear();
@@ -111,7 +112,7 @@ public class CreateTestManuallyView implements AbstractCreateTestManuallyView {
 				alert.setContentText("Please enter a size that is in range of valid question number!");
 				alert.showAndWait().ifPresent(rs -> {
 					if (rs == ButtonType.OK) {
-						System.out.println("Pressed OK.");
+						//System.out.println("Pressed OK.");
 					}
 				});
 				testSizeText.clear();
@@ -132,11 +133,11 @@ public class CreateTestManuallyView implements AbstractCreateTestManuallyView {
 				if (questIndex > 0 && questIndex <= getNumOfQuestions()) {
 					if (isQuestionValid(--questIndex)) {
 						res = addQuestionToTest(questIndex);
-						System.out.println(getNumOfQuestions());
-						System.out.println(getNumOfValidQuestions());
+					//	System.out.println(getNumOfQuestions());
+					//	System.out.println(getNumOfValidQuestions());
 						if (res) {
-							System.out.println(getNumOfQuestions());
-							System.out.println(getNumOfValidQuestions());
+						//	System.out.println(getNumOfQuestions());
+							//System.out.println(getNumOfValidQuestions());
 							count--;
 							if (count > 0) {
 								Alert alert = new Alert(AlertType.INFORMATION);
@@ -145,7 +146,7 @@ public class CreateTestManuallyView implements AbstractCreateTestManuallyView {
 								alert.setContentText("Please enter add more valid questions before creating a test!");
 								alert.showAndWait().ifPresent(rs -> {
 									if (rs == ButtonType.OK) {
-										System.out.println("Pressed OK.");
+										//System.out.println("Pressed OK.");
 									}
 								});
 							}
@@ -166,7 +167,7 @@ public class CreateTestManuallyView implements AbstractCreateTestManuallyView {
 								"Please enter an index of a valid question from the list, that wasn't added to the test already!");
 						alert.showAndWait().ifPresent(rs -> {
 							if (rs == ButtonType.OK) {
-								System.out.println("Pressed OK.");
+								//System.out.println("Pressed OK.");
 							}
 						});
 					}
@@ -178,7 +179,7 @@ public class CreateTestManuallyView implements AbstractCreateTestManuallyView {
 					alert.setContentText("Please enter an index of a valid question from the list!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//System.out.println("Pressed OK.");
 						}
 					});
 
@@ -191,7 +192,7 @@ public class CreateTestManuallyView implements AbstractCreateTestManuallyView {
 						"Please enter an index of a valid question from the list, that wasn't added to the test already!");
 				alert.showAndWait().ifPresent(rs -> {
 					if (rs == ButtonType.OK) {
-						System.out.println("Pressed OK.");
+						//System.out.println("Pressed OK.");
 					}
 				});
 			}
@@ -214,7 +215,7 @@ public class CreateTestManuallyView implements AbstractCreateTestManuallyView {
 
 	public boolean addQuestionToTest(int questIndex) {
 		boolean b = false;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			b = l.addQuestionToTest(questIndex);
 		}
 		return b;
@@ -222,7 +223,7 @@ public class CreateTestManuallyView implements AbstractCreateTestManuallyView {
 
 	public int getNumOfQuestions() {
 		int numOfQuestions = 0;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			numOfQuestions = l.getNumOfQuestions();
 		}
 		return numOfQuestions;
@@ -292,7 +293,7 @@ public class CreateTestManuallyView implements AbstractCreateTestManuallyView {
 
 	@Override
 	public void OpenAllValidQuestionView() {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.OpenAllValidQuestionView(new Stage());
 		}
 	}
@@ -300,7 +301,7 @@ public class CreateTestManuallyView implements AbstractCreateTestManuallyView {
 	@Override
 	public boolean isQuestionValid(int questIndex) {
 		boolean res = false;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			res = l.isValidQuestion(questIndex);
 		}
 		return res;
@@ -308,14 +309,14 @@ public class CreateTestManuallyView implements AbstractCreateTestManuallyView {
 
 	@Override
 	public void createTest(int size) {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.createTest(size);
 		}
 	}
 
 	@Override
-	public void finish() throws FileNotFoundException {
-		for (UIListener l : listeners) {
+	public void finish() throws FileNotFoundException, SQLException {
+		for (I_UIListener l : listeners) {
 			l.finishTest();
 		}
 
@@ -323,7 +324,7 @@ public class CreateTestManuallyView implements AbstractCreateTestManuallyView {
 
 	public int getNumOfValidQuestions() {
 		int i = 0;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			i = l.getNumOfValidQuestions();
 		}
 		return i;

@@ -1,5 +1,6 @@
 package view;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javafx.collections.ObservableList;
@@ -19,10 +20,10 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
-import listeners.UIListener;
+import listeners.I_UIListener;
 
-public class AddAnswerView implements AbstractAddAnswerView {
-	ArrayList<UIListener> listeners = new ArrayList<>();
+public class AddAnswerView implements A_AddAnswerView {
+	ArrayList<I_UIListener> listeners = new ArrayList<>();
 	Stage window;
 	Scene scene;
 	GridPane gp;
@@ -46,7 +47,7 @@ public class AddAnswerView implements AbstractAddAnswerView {
 	}
 
 	@Override
-	public void registerListener(UIListener listener) {
+	public void registerListener(I_UIListener listener) {
 		listeners.add(listener);
 
 	}
@@ -89,7 +90,7 @@ public class AddAnswerView implements AbstractAddAnswerView {
 					alert.setContentText("Please enter an index of a question from the list!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//System.out.println("Pressed OK.");
 						}
 					});
 					questIndexText.clear();
@@ -103,7 +104,7 @@ public class AddAnswerView implements AbstractAddAnswerView {
 				alert.setContentText("Please enter an index of a question from the list!");
 				alert.showAndWait().ifPresent(rs -> {
 					if (rs == ButtonType.OK) {
-						System.out.println("Pressed OK.");
+						//System.out.println("Pressed OK.");
 					}
 				});
 				questIndexText.clear();
@@ -138,7 +139,7 @@ public class AddAnswerView implements AbstractAddAnswerView {
 							alert.setContentText("Please select if the answer is correct!");
 							alert.showAndWait().ifPresent(rs -> {
 								if (rs == ButtonType.OK) {
-									System.out.println("Pressed OK.");
+								//	System.out.println("Pressed OK.");
 								}
 							});
 
@@ -151,7 +152,7 @@ public class AddAnswerView implements AbstractAddAnswerView {
 					alert.setContentText("Please enter the answer!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+						//	System.out.println("Pressed OK.");
 						}
 					});
 				}
@@ -162,7 +163,7 @@ public class AddAnswerView implements AbstractAddAnswerView {
 					alert.setContentText("Your answer was added successfully!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+						//	System.out.println("Pressed OK.");
 						}
 					});
 
@@ -174,19 +175,21 @@ public class AddAnswerView implements AbstractAddAnswerView {
 							"make sure your answer does not exist already, and there are less than 10 answers!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+						//	System.out.println("Pressed OK.");
 						}
 					});
 				}
-
+			}catch(SQLException e1) {
+				System.out.println(e1.getMessage());
 			} catch (Exception e2) {
+				System.out.println();
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Error!");
 				alert.setHeaderText("Could not add answer");
 				alert.setContentText("We are sorry, we could not add your answer!");
 				alert.showAndWait().ifPresent(rs -> {
 					if (rs == ButtonType.OK) {
-						System.out.println("Pressed OK.");
+					//	System.out.println("Pressed OK.");
 					}
 				});
 			}
@@ -206,7 +209,7 @@ public class AddAnswerView implements AbstractAddAnswerView {
 
 	public boolean addAnswerToModel(int index, String text, boolean b) throws Exception {
 		boolean res = false;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 
 			res = l.addAnswerToModel(index, text, b);
 		}
@@ -215,7 +218,7 @@ public class AddAnswerView implements AbstractAddAnswerView {
 
 	public boolean isOpenQuestion(int i) {
 		boolean res = false;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			res = l.isOpenQuestion(i);
 		}
 		return res;
@@ -224,14 +227,14 @@ public class AddAnswerView implements AbstractAddAnswerView {
 
 	public int getNumOfQuestions() {
 		int numOfQuestions = 0;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			numOfQuestions = l.getNumOfQuestions();
 		}
 		return numOfQuestions;
 	}
 
 	public void OpenAllQuestionView() {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.OpenAllQuestionView(new Stage());
 		}
 

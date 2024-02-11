@@ -19,10 +19,10 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
-import listeners.UIListener;
+import listeners.I_UIListener;
 
-public class DeleteAnswerView implements AbstractDeleteAnswerView {
-	ArrayList<UIListener> listeners = new ArrayList<>();
+public class DeleteAnswerView implements A_DeleteAnswerView {
+	ArrayList<I_UIListener> listeners = new ArrayList<>();
 	Stage window;
 	Scene scene;
 	GridPane gp;
@@ -45,7 +45,7 @@ public class DeleteAnswerView implements AbstractDeleteAnswerView {
 	}
 
 	@Override
-	public void registerListener(UIListener listener) {
+	public void registerListener(I_UIListener listener) {
 		listeners.add(listener);
 
 	}
@@ -83,7 +83,7 @@ public class DeleteAnswerView implements AbstractDeleteAnswerView {
 					alert.setContentText("Please enter an index of a question from the list!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//System.out.println("Pressed OK.");
 						}
 					});
 					questIndexText.clear();
@@ -97,7 +97,7 @@ public class DeleteAnswerView implements AbstractDeleteAnswerView {
 				alert.setContentText("Please enter an index of a question from the list!");
 				alert.showAndWait().ifPresent(rs -> {
 					if (rs == ButtonType.OK) {
-						System.out.println("Pressed OK.");
+						//System.out.println("Pressed OK.");
 					}
 				});
 				questIndexText.clear();
@@ -131,7 +131,7 @@ public class DeleteAnswerView implements AbstractDeleteAnswerView {
 					alert.setContentText("The answer was removed successfully!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//System.out.println("Pressed OK.");
 						}
 					});
 
@@ -142,7 +142,7 @@ public class DeleteAnswerView implements AbstractDeleteAnswerView {
 					alert.setContentText("make sure your answer exist");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//System.out.println("Pressed OK.");
 						}
 					});
 				}
@@ -154,7 +154,7 @@ public class DeleteAnswerView implements AbstractDeleteAnswerView {
 				alert.setContentText("We are sorry, we could not delete your answer!");
 				alert.showAndWait().ifPresent(rs -> {
 					if (rs == ButtonType.OK) {
-						System.out.println("Pressed OK.");
+						//System.out.println("Pressed OK.");
 					}
 				});
 			}
@@ -180,7 +180,7 @@ public class DeleteAnswerView implements AbstractDeleteAnswerView {
 							"Please enter an index of an answer from the question you chose (Larger than 2)!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//System.out.println("Pressed OK.");
 						}
 					});
 					answerIndexText.clear();
@@ -193,7 +193,7 @@ public class DeleteAnswerView implements AbstractDeleteAnswerView {
 					alert.setContentText("Please enter an index of an answer from the question you chose!");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							//System.out.println("Pressed OK.");
 						}
 					});
 					answerIndexText.clear();
@@ -207,7 +207,7 @@ public class DeleteAnswerView implements AbstractDeleteAnswerView {
 				alert.setContentText("Please enter an index of an answer from the question you chose!");
 				alert.showAndWait().ifPresent(rs -> {
 					if (rs == ButtonType.OK) {
-						System.out.println("Pressed OK.");
+						//System.out.println("Pressed OK.");
 					}
 				});
 
@@ -286,7 +286,7 @@ public class DeleteAnswerView implements AbstractDeleteAnswerView {
 
 	@Override
 	public void OpenAllQuestionView() {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.OpenAllQuestionView(new Stage());
 		}
 
@@ -295,7 +295,7 @@ public class DeleteAnswerView implements AbstractDeleteAnswerView {
 	@Override
 	public boolean isOpenQuestion(int i) {
 		boolean res = false;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			res = l.isOpenQuestion(i);
 		}
 		return res;
@@ -304,7 +304,7 @@ public class DeleteAnswerView implements AbstractDeleteAnswerView {
 	@Override
 	public boolean deleteAnswerFromModel(int questIndex, int answerIndex) throws Exception {
 		boolean res = false;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 
 			res = l.deleteAnswer(questIndex, answerIndex);
 		}
@@ -314,7 +314,7 @@ public class DeleteAnswerView implements AbstractDeleteAnswerView {
 	@Override
 	public int getNumOfQuestions() {
 		int numOfQuestions = 0;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			numOfQuestions = l.getNumOfQuestions();
 		}
 		return numOfQuestions;
@@ -322,7 +322,7 @@ public class DeleteAnswerView implements AbstractDeleteAnswerView {
 
 	public int getNumOfAnswersForQuestion(int questIndex) {
 		int numOfAnswers = 0;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			numOfAnswers = l.getNumOfAnswersForQuestion(questIndex);
 		}
 		return numOfAnswers;

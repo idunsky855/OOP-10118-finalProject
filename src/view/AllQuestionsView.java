@@ -12,10 +12,10 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import listeners.UIListener;
+import listeners.I_UIListener;
 
-public class AllQuestionsView implements AbstractQuestionView {
-	ArrayList<UIListener> listeners = new ArrayList<>();
+public class AllQuestionsView implements A_QuestionView {
+	ArrayList<I_UIListener> listeners = new ArrayList<>();
 	Stage window;
 	Scene scene;
 	GridPane gp;
@@ -34,7 +34,7 @@ public class AllQuestionsView implements AbstractQuestionView {
 	}
 
 	@Override
-	public void registerListener(UIListener listener) {
+	public void registerListener(I_UIListener listener) {
 		this.listeners.add(listener);
 	}
 
@@ -62,7 +62,7 @@ public class AllQuestionsView implements AbstractQuestionView {
 			alert.setContentText("There are no questions in database!");
 			alert.showAndWait().ifPresent(rs -> {
 				if (rs == ButtonType.OK) {
-					System.out.println("Pressed OK.");
+					//System.out.println("Pressed OK.");
 					window.close();
 				}
 			});

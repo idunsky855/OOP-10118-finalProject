@@ -1,23 +1,23 @@
 package controller;
 
-import java.awt.Window;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javafx.stage.Stage;
 import listeners.*;
 import model.*;
-import view.AbstractAddAnswerView;
-import view.AbstractAddQuestionView;
-import view.AbstractChangeAnswerView;
-import view.AbstractChangeQuestionView;
-import view.AbstractCloneTestView;
-import view.AbstractCreateTestManuallyView;
-import view.AbstractCreateTestRandomlyView;
-import view.AbstractDeleteAnswerView;
-import view.AbstractQuestionView;
-import view.AbstractTestView;
-import view.AbstractView;
+import view.A_AddAnswerView;
+import view.A_AddQuestionView;
+import view.A_ChangeAnswerView;
+import view.A_ChangeQuestionView;
+import view.A_CloneTestView;
+import view.A_CreateTestManuallyView;
+import view.A_CreateTestRandomlyView;
+import view.A_DeleteAnswerView;
+import view.A_QuestionView;
+import view.A_TestView;
+import view.A_View;
 import view.AddAnswerView;
 import view.AddQuestionView;
 import view.AllQuestionsView;
@@ -30,23 +30,23 @@ import view.CreateTestRandomlyView;
 import view.DeleteAnswerView;
 import view.TestView;
 
-public class Controller implements BLListener, UIListener {
+public class Controller implements I_BLListener, I_UIListener {
 
 	private Management model;
-	private AbstractView primaryView;
-	private AbstractQuestionView questView;
-	private AbstractAddQuestionView addQuestView;
-	private AbstractAddAnswerView addAnswerView;
-	private AbstractChangeQuestionView changeQuestionView;
-	private AbstractChangeAnswerView changeAnswerView;
-	private AbstractDeleteAnswerView deleteAnswerView;
-	private AbstractQuestionView allValidQuetionView;
-	private AbstractCreateTestManuallyView createTestManuallyView;
-	private AbstractCreateTestRandomlyView createTestRandomlyView;
-	private AbstractTestView testWithAnswersView, testWithoutAnswersView, allTestsView;
-	private AbstractCloneTestView cloneTestView;
+	private A_View primaryView;
+	private A_QuestionView questView;
+	private A_AddQuestionView addQuestView;
+	private A_AddAnswerView addAnswerView;
+	private A_ChangeQuestionView changeQuestionView;
+	private A_ChangeAnswerView changeAnswerView;
+	private A_DeleteAnswerView deleteAnswerView;
+	private A_QuestionView allValidQuetionView;
+	private A_CreateTestManuallyView createTestManuallyView;
+	private A_CreateTestRandomlyView createTestRandomlyView;
+	private A_TestView testWithAnswersView, testWithoutAnswersView, allTestsView;
+	private A_CloneTestView cloneTestView;
 
-	public Controller(Management model, AbstractView primaryView) {
+	public Controller(Management model, A_View primaryView) {
 		this.model = model;
 		this.primaryView = primaryView;
 
@@ -75,14 +75,16 @@ public class Controller implements BLListener, UIListener {
 	}
 
 	@Override
-	public boolean addQuestionToModel(Question question) {
+	public boolean addQuestionToModel(A_Question question) throws IndexOutOfBoundsException, SQLException {
 		return model.addQuestion(question);
 
 	}
 
 	@Override
-	public void QuestionAdded(Question question) {
-		this.questView.closeWindow();
+	public void QuestionAdded(A_Question question) {
+		if(questView != null) {
+			this.questView.closeWindow();
+		}
 		OpenAllQuestionView(new Stage());
 	}
 
@@ -114,7 +116,7 @@ public class Controller implements BLListener, UIListener {
 	}
 
 	@Override
-	public boolean changeQuestion(int index, String str) {
+	public boolean changeQuestion(int index, String str) throws IndexOutOfBoundsException, SQLException {
 		return model.changeQuestion(index, str);
 
 	}
@@ -139,7 +141,7 @@ public class Controller implements BLListener, UIListener {
 	}
 
 	@Override
-	public boolean changeAnswerToModel(int questIndex, int answerIndex, String answer, boolean isTrue) {
+	public boolean changeAnswerToModel(int questIndex, int answerIndex, String answer, boolean isTrue) throws IndexOutOfBoundsException, SQLException {
 		return model.changeAnswer(questIndex, answerIndex, answer, isTrue);
 	}
 
@@ -156,7 +158,7 @@ public class Controller implements BLListener, UIListener {
 	}
 
 	@Override
-	public boolean deleteAnswer(int questIndex, int answerIndex) {
+	public boolean deleteAnswer(int questIndex, int answerIndex) throws IndexOutOfBoundsException, SQLException {
 		return model.removeAnswer(questIndex, answerIndex);
 	}
 
@@ -191,8 +193,7 @@ public class Controller implements BLListener, UIListener {
 	}
 
 	@Override
-	public void finishTest() throws FileNotFoundException {
-
+	public void finishTest() throws FileNotFoundException, SQLException {
 		model.finishTest();
 	}
 
@@ -275,11 +276,16 @@ public class Controller implements BLListener, UIListener {
 	}
 
 	@Override
-	public void saveAndExit() throws FileNotFoundException, IOException {
-		model.saveAllQuestions();
-		model.saveAllTests();
+	public void saveAndExit() throws FileNotFoundException, IOException, SQLException {
+		model.closeConnection();
 		primaryView.closeWindow();
 
+	}
+
+	@Override
+	public void finishClonedTest() {
+		model.finishClonedTest();
+		
 	}
 
 }

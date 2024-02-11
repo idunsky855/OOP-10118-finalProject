@@ -1,5 +1,6 @@
 package view;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javafx.collections.ObservableList;
@@ -25,13 +26,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import listeners.UIListener;
+import listeners.I_UIListener;
 import model.MultiChoiceQuestion;
 import model.OpenQuestion;
-import model.Question;
+import model.A_Question;
 
-public class AddQuestionView implements AbstractAddQuestionView {
-	ArrayList<UIListener> listeners = new ArrayList<>();
+public class AddQuestionView implements A_AddQuestionView {
+	ArrayList<I_UIListener> listeners = new ArrayList<>();
 	Stage window;
 	Scene scene;
 	GridPane gp;
@@ -54,7 +55,7 @@ public class AddQuestionView implements AbstractAddQuestionView {
 	}
 
 	@Override
-	public void registerListener(UIListener listener) {
+	public void registerListener(I_UIListener listener) {
 		this.listeners.add(listener);
 	}
 
@@ -162,34 +163,40 @@ public class AddQuestionView implements AbstractAddQuestionView {
 		});
 
 		addButton.setOnAction(e -> {
-			Question temp;
+			A_Question temp;
 			if (choiceButton.getSelectionModel().getSelectedItem().equals("Open Question")) {
 				String questText = openQuestText.getText();
 				String answerText = openAnswerText.getText();
 				if (questText.length() != 0 && answerText.length() != 0) {
-					System.out.println(questText);
+					//System.out.println(questText);
 					temp = new OpenQuestion(questText, answerText);
-					if (addQuestionToController(temp)) {
-						Alert alert = new Alert(AlertType.INFORMATION);
-						alert.setTitle("Question added");
-						alert.setHeaderText("yay!!!");
-						alert.setContentText("Your Question was added succesfully");
-						alert.showAndWait().ifPresent(rs -> {
-							if (rs == ButtonType.OK) {
-								System.out.println("Pressed OK.");
-							}
-						});
-					} else {
-						Alert alert = new Alert(AlertType.ERROR);
-						alert.setTitle("Question was not added");
-						alert.setHeaderText("Error");
-						alert.setContentText("Your Question already exist in the database!");
-						alert.showAndWait().ifPresent(rs -> {
-							if (rs == ButtonType.OK) {
-								System.out.println("Pressed OK.");
-							}
-						});
+					try {
+						if (addQuestionToController(temp)) {
+							Alert alert = new Alert(AlertType.INFORMATION);
+							alert.setTitle("Question added");
+							alert.setHeaderText("yay!!!");
+							alert.setContentText("Your Question was added succesfully");
+							alert.showAndWait().ifPresent(rs -> {
+								if (rs == ButtonType.OK) {
+									////System.out.println("Pressed OK.");
+								}
+							});
+						} else {
+							Alert alert = new Alert(AlertType.ERROR);
+							alert.setTitle("Question was not added");
+							alert.setHeaderText("Error");
+							alert.setContentText("Your Question already exist in the database!");
+							alert.showAndWait().ifPresent(rs -> {
+								if (rs == ButtonType.OK) {
+									////System.out.println("Pressed OK.");
+								}
+							});
 
+						}
+					} catch (IndexOutOfBoundsException e1) {
+						System.out.println(e1.getMessage());
+					} catch (SQLException e1) {
+						System.out.println(e1.getMessage());
 					}
 				} else {
 					Alert alert = new Alert(AlertType.ERROR);
@@ -198,7 +205,7 @@ public class AddQuestionView implements AbstractAddQuestionView {
 					alert.setContentText("Please enter text to field");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+							////System.out.println("Pressed OK.");
 						}
 					});
 
@@ -217,7 +224,7 @@ public class AddQuestionView implements AbstractAddQuestionView {
 									"Your Question was added succesfully, \nnow you can add answer in the add answers section");
 							alert.showAndWait().ifPresent(rs -> {
 								if (rs == ButtonType.OK) {
-									System.out.println("Pressed OK.");
+									////System.out.println("Pressed OK.");
 								}
 							});
 						} else {
@@ -227,7 +234,7 @@ public class AddQuestionView implements AbstractAddQuestionView {
 							alert.setContentText("Your Question already exist in the database!");
 							alert.showAndWait().ifPresent(rs -> {
 								if (rs == ButtonType.OK) {
-									System.out.println("Pressed OK.");
+									////System.out.println("Pressed OK.");
 								}
 							});
 
@@ -242,7 +249,7 @@ public class AddQuestionView implements AbstractAddQuestionView {
 					alert.setContentText("Please enter text to field");
 					alert.showAndWait().ifPresent(rs -> {
 						if (rs == ButtonType.OK) {
-							System.out.println("Pressed OK.");
+						//	//System.out.println("Pressed OK.");
 						}
 					});
 				}
@@ -273,22 +280,22 @@ public class AddQuestionView implements AbstractAddQuestionView {
 	}
 
 	public void OpenAllQuestionView() {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.OpenAllQuestionView(new Stage());
 		}
 	}
 
 	@Override
-	public boolean addQuestionToController(Question quest) {
+	public boolean addQuestionToController(A_Question quest) throws IndexOutOfBoundsException, SQLException {
 		boolean res = false;
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			res = l.addQuestionToModel(quest);
 		}
 		return res;
 	}
 
 	public void openAddAnswerView() {
-		for (UIListener l : listeners) {
+		for (I_UIListener l : listeners) {
 			l.openAddAnswerView(new Stage());
 		}
 

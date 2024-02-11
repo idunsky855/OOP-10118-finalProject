@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MySet<T> implements Serializable {
 
@@ -12,6 +13,12 @@ public class MySet<T> implements Serializable {
 		array = new ArrayList<T>();
 	}
 
+	public boolean addAll(List<T> l) {
+		for(T t : l) {
+			if(!array.contains(t)) array.add(t);
+		}
+		return true;
+	}
 	public boolean add(T other) throws Exception {
 		if (array.contains(other))
 			throw new Exception("This object already exist in the set!");
